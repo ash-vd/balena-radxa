@@ -14,7 +14,7 @@ jobs:
 
       - name: Build Yocto Rootfs
         run: |
-          ./balena-yocto-scripts/build/barys -m rockpi-px30
+          ./balena-yocto-scripts/build/barys -m rockpi-px30 --shared-downloads /yocto/shared-downloads --shared-sstate /yocto/shared-sstate
 
       - name: Compress the output images
         run: |
