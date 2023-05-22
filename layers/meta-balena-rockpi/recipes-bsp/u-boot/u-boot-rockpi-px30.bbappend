@@ -4,18 +4,70 @@ UBOOT_KCONFIG_SUPPORT = "1"
 
 inherit resin-u-boot
 
-DEPENDS += "radxa-binary-loader"
-
-BALENA_BOOT_PART_rockchip-px30 = "3"
-BALENA_DEFAULT_ROOT_PART_rockchip-px30 = "4"
+DEPENDS += "radxa-binary-loader radxa-binary-native"
 
 SRC_URI_append = " \
     file://0001-Integrate-with-Balena-u-boot-environment.patch \
 "
 
-# avoid compile error while buildingin Jenkins: [Errno 11] write could not complete without blockingERROR: Task (/work/build/../layers/meta-radxa/recipes-bsp/u-boot/u-boot-radxa-cm3-io.bb:do_compile) failed with exit code '1'
-# ref: https://www.yoctoproject.org/irc/%23yocto.2020-09-16.log.html and https://stackoverflow.com/questions/54185874/logging-chokes-on-blockingioerror-write-could-not-complete-without-blocking
-EXTRA_OEMAKE += " > /dev/null 2>&1"
+BALENA_BOOT_PART_rockpi-px30 = "4"
+BALENA_DEFAULT_ROOT_PART_rockpi-px30 = "5"
 
-# Ensure the deploy task isn't re-used from sstate
+do_compile_append() {
+    # create bootloader image
+    loaderimage --pack --uboot ./u-boot-dtb.bin ${DEPLOY_DIR_IMAGE}/u-boot.img 0x200000 --size 1024 1
+
+    ./tools/mkimage -n ${SOC_FAMILY} -T rksd -d ${DEPLOY_DIR_IMAGE}/radxa-binary/ddr.bin ${DEPLOY_DIR_IMAGE}/idbloader.bin
+    cat ${DEPLOY_DIR_IMAGE}/radxa-binary/miniloader.bin >>${DEPLOY_DIR_IMAGE}/idbloader.bin
+    cat >${DEPLOY_DIR_IMAGE}/trust.ini <<EOF
+[VERSION]
+MAJOR=1
+MINOR=0
+[BL30_OPTION]
+SEC=0
+[BL31_OPTION]
+SEC=1
+PATH=radxa-binary/bl31.elf
+ADDR=0x10000
+[BL32_OPTION]
+SEC=0
+[BL33_OPTION]
+SEC=0
+[OUTPUT]
+PATH=trust.img
+EOF
+
+    cd ${DEPLOY_DIR_IMAGE} && trust_merger --size 1024 1 ${DEPLOY_DIR_IMAGE}/trust.ini
+}
+
+# Ensure this isn't re-used from sstate
 do_deploy[nostamp] = "1"
+
+do_deploy_append() {
+    KERNEL_CMDLINE_ARGS="console=tty1 console=ttyFIQ0,1500000n8 rw \${resin_kernel_root} rootfstype=ext4 rootwait"
+
+    # Create extlinux config file for internal image
+    mkdir -p ${DEPLOY_DIR_IMAGE}/extlinux || true
+    cat >${DEPLOY_DIR_IMAGE}/extlinux/extlinux.conf <<EOF
+default BalenaOS
+
+label BalenaOS
+    kernel /${KERNEL_IMAGETYPE}
+
+    devicetree /$(echo "${KERNEL_DEVICETREE}" | cut -d '/' -f 2)
+    append ${KERNEL_CMDLINE_ARGS}
+EOF
+
+    # Create extlinux config file for flasher image
+
+    cat >${DEPLOY_DIR_IMAGE}/extlinux/extlinux.conf_flasher <<EOF
+default BalenaOS
+
+label balenaOS
+    kernel /${KERNEL_IMAGETYPE}
+
+    devicetree /$(echo "${KERNEL_DEVICETREE}" | cut -d '/' -f 2)
+    append ${KERNEL_CMDLINE_ARGS_FLASHER}
+EOF
+
+}

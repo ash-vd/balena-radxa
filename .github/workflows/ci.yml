@@ -14,11 +14,11 @@ jobs:
 
       - name: Build Yocto Rootfs
         run: |
-          ./balena-yocto-scripts/build/barys -m rockpi-px30 --shared-downloads /yocto/shared-downloads --shared-sstate /yocto/shared-sstate
+          ./balena-yocto-scripts/build/barys -m rockpi-4b-rk3399 --shared-downloads /yocto/shared-downloads --shared-sstate /yocto/shared-sstate
 
       - name: Compress the output images
         run: |
-          tar -czvf images.tar.gz -C ./build/tmp/deploy/images/rockpi-px30 .
+          tar -czvf images.tar.gz -C ./build/tmp/deploy/images/rockpi-4b-rk3399 .
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2

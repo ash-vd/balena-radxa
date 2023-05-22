@@ -2,6 +2,7 @@ IMAGE_FSTYPES += "balenaos-img"
 
 PARTITION_TABLE_TYPE_radxa-cm3-io-rk3566 = "gpt"
 PARTITION_TABLE_TYPE_rockpi-4b-rk3399 = "gpt"
+PARTITION_TABLE_TYPE_rockpi-px30 = "gpt"
 
 DEVICE_SPECIFIC_SPACE_radxa-cm3-io-rk3566 = "40960"
 DEVICE_SPECIFIC_SPACE_rockpi-4b-rk3399 = "40960"
