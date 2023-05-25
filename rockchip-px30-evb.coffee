@@ -12,8 +12,8 @@ CM3_REPOWER = "Once the OS has been written to the eMMC you need to repower your
 
 module.exports =
 	version: 1
-	slug: 'rockpi-px30'
-	name: 'RockPi PX30'
+	slug: 'rockchip-px30-evb'
+	name: 'Rockchip PX30 EVB'
 	arch: 'aarch64'
 	state: 'new'
 
@@ -37,7 +37,7 @@ module.exports =
 		machine: 'rockchip-px30-evb'
 		image: 'balena-image'
 		fstype: 'balenaos-img'
-		version: 'yocto-dunkirk'
+		version: 'yocto-kirkstone'
 		deployArtifact: 'balena-image-rockchip-px30-evb.balenaos-img'
 		compressed: true
 

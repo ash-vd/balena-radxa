@@ -4,12 +4,14 @@
 [submodule "layers/poky"]
 	path = layers/poky
 	url = https://github.com/balena-os/poky
+	branch = dunfell
 [submodule "layers/meta-rust"]
 	path = layers/meta-rust
 	url = https://github.com/meta-rust/meta-rust.git
 [submodule "layers/meta-openembedded"]
 	path = layers/meta-openembedded
 	url = https://github.com/openembedded/meta-openembedded.git
+	branch = dunfell
 [submodule "layers/meta-balena"]
 	path = layers/meta-balena
 	url = https://github.com/balena-os/meta-balena.git
@@ -19,4 +21,4 @@
 [submodule "layers/meta-rockchip"]
 	path = layers/meta-rockchip
 	url = https://github.com/JeffyCN/meta-rockchip.git
-	branch = master
+	branch = dunfell
