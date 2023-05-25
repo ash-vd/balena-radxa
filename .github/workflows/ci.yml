@@ -2,7 +2,7 @@ name: CI - Compile
 
 on:
   push:
-    branches: [master, develop]
+    branches: [master, rockchip]
 
 jobs:
   build-yocto:
@@ -14,11 +14,11 @@ jobs:
 
       - name: Build Yocto Rootfs
         run: |
-          ./balena-yocto-scripts/build/barys -m rockpi-px30 --shared-downloads /yocto/shared-downloads --shared-sstate /yocto/shared-sstate
+          ./balena-yocto-scripts/build/barys -m rockchip-px30-evb --shared-downloads /yocto/shared-downloads --shared-sstate /yocto/shared-sstate
 
       - name: Compress the output images
         run: |
-          tar -czvf images.tar.gz -C ./build/tmp/deploy/images/rockpi-px30 .
+          tar -czvf images.tar.gz -C ./build/tmp/deploy/images/rockchip-px30-evb .
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2

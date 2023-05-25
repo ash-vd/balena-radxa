@@ -34,16 +34,16 @@ module.exports =
 	options: [ networkOptions.group ]
 
 	yocto:
-		machine: 'rockpi-px30'
+		machine: 'rockchip-px30-evb'
 		image: 'balena-image'
 		fstype: 'balenaos-img'
-		version: 'yocto-dunfell'
-		deployArtifact: 'balena-image-rockpi-px30.balenaos-img'
+		version: 'yocto-dunkirk'
+		deployArtifact: 'balena-image-rockchip-px30-evb.balenaos-img'
 		compressed: true
 
 	configuration:
 		config:
-			partition: 3
+			partition: 1
 			path: '/config.json'
 
 	initialization: commonImg.initialization

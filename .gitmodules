@@ -4,9 +4,6 @@
 [submodule "layers/poky"]
 	path = layers/poky
 	url = https://github.com/balena-os/poky
-[submodule "layers/meta-radxa"]
-	path = layers/meta-radxa
-	url = https://github.com/ash-vd/meta-radxa.git
 [submodule "layers/meta-rust"]
 	path = layers/meta-rust
 	url = https://github.com/meta-rust/meta-rust.git
@@ -19,3 +16,7 @@
 [submodule "contracts"]
 	path = contracts
 	url = https://github.com/balena-io/contracts.git
+[submodule "layers/meta-rockchip"]
+	path = layers/meta-rockchip
+	url = https://github.com/JeffyCN/meta-rockchip.git
+	branch = master
